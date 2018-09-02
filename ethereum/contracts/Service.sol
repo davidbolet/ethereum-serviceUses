@@ -11,10 +11,23 @@ contract ServiceFactory {
 
     function createService(string name) public {
         require (serviceLocator[name]==0);
-        address newService = new Service(name, msg.sender);
+        address newService = new Service(name, msg.sender, false, false);
         deployedServices.push(newService);
         serviceLocator[name]=newService;
+    }
 
+    function createServicePublic(string name, bool autoRegister) public {
+        require (serviceLocator[name]==0);
+        address newService = new Service(name, msg.sender, true, autoRegister);
+        deployedServices.push(newService);
+        serviceLocator[name]=newService;
+    }
+
+    function createServiceAutoRegistrable(string name, bool usersPublic) public {
+        require (serviceLocator[name]==0);
+        address newService = new Service(name, msg.sender, usersPublic, true);
+        deployedServices.push(newService);
+        serviceLocator[name]=newService;
     }
 
     function getDeployedServices() public view returns (address[]) {
@@ -40,9 +53,13 @@ contract Service {
     }
 
     Use[] public uses;
+    address[] public userList;
     address public manager;
     string public name;
     uint public usersCount;
+    uint public defaultNumUses;
+    bool public useUsersList;
+    bool public allowAutoRegister;
     mapping(address => uint) public remainingUses;
     mapping(address => uint[]) public userUses;
     mapping(address => bool) public registered;
@@ -52,9 +69,15 @@ contract Service {
         _;
     }
 
-    constructor (string serviceName, address creator) public {
+    constructor (string serviceName, address creator, bool useUserList, bool allowUsersRegister) public {
         manager = creator;
         name = serviceName;
+        useUsersList = useUserList;
+        allowAutoRegister=allowUsersRegister;
+    }
+
+    function setDefaultNumUses(uint numUses) public restricted {
+      defaultNumUses = numUses;
     }
 
     function useService(string desc, address userAddress)
@@ -91,6 +114,19 @@ contract Service {
             registered[user] =true;
             usersCount++;
         }
+        if (useUsersList) {
+          userList.push(user);
+        }
+    }
+
+    function autoAdd() public {
+      require(allowAutoRegister && !registered[msg.sender]);
+      remainingUses[msg.sender]= defaultNumUses;
+      registered[msg.sender] =true;
+      usersCount++;
+      if (useUsersList) {
+        userList.push(msg.sender);
+      }
     }
 
 }

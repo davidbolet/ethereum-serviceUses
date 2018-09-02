@@ -18,7 +18,7 @@ const deploy = async () => {
   // Use one account to deploy contract
   const result = await new web3.eth.Contract(JSON.parse(compiledFactory.interface))
     .deploy({ data: '0x'+compiledFactory.bytecode})
-    .send({ from: accounts[0], gas: '1000000'});
+    .send({ from: accounts[0], gas: '2000000'});
 
   //console.log(interface);
   console.log('Contract deployed to ', result.options.address);
