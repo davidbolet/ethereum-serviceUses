@@ -10,18 +10,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fs-extra": "^7.0.0",
-    "ganache-cli": "^6.1.8",
-    "mocha": "^5.2.0",
-    "next": "^6.1.1",
+    "fs-extra": "^9.0.1",
+    "ganache-cli": "^6.10.1",
+    "lodash": ">=4.17.19",
+    "mocha": "^8.1.1",
+    "next": "^9.3.2",
     "next-routes": "^1.4.2",
-    "react": "^16.4.2",
+    "react": "^16.13.1",
     "react-dom": "^16.4.2",
     "semantic-ui-css": "^2.3.3",
-    "semantic-ui-react": "^0.82.2",
-    "solc": "^0.4.24",
-    "truffle": "^4.1.14",
+    "semantic-ui-react": "^1.2.0",
+    "solc": "^0.7.0",
+    "truffle": "^5.1.41",
     "truffle-hdwallet-provider": "0.0.6",
-    "web3": "^1.0.0-beta.35"
+    "web3": "^1.2.11"
   }
 }
